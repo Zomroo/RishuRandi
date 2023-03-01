@@ -14,6 +14,26 @@ bot = Client(
     bot_token=BOT_TOKEN
 )
 
+def handle_message(client, message):
+    chat_id = message.chat.id
+    text = message.text
+
+    if text == '/start':
+        bot.send_message(chat_id, "Hi! I'm a Waifu Catcher bot. I post a new waifu every 5 minutes in this group.")
+    elif text == '/help':
+        help_text = "Here are the available commands:\n\n" \
+                    "/start - Start the bot\n" \
+                    "/help - List all available commands and their functions\n" \
+                    "/randi waifu_name - Protect a waifu with the given name\n" \
+                    "/myrandi - List all waifus protected by you\n"
+        bot.send_message(chat_id, help_text)
+    elif text.startswith('/randi'):
+        # handle /randi command
+        ...
+    elif text == '/myrandi':
+        # handle /myrandi command
+        ...
+
 TIME_INTERVAL = 5 * 60  # 5 minutes in seconds
 
 def send_waifu_announcement():
