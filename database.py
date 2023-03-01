@@ -1,7 +1,7 @@
 from pymongo import MongoClient
-from config import MONGODB_URI
+from config import MONGODB_URL
 
-client = MongoClient(MONGO_URI)
+client = MongoClient(MONGO_URL)
 db = client.get_database(database_name)
 
 
