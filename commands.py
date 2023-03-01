@@ -1,38 +1,27 @@
 from pyrogram import Client, filters
 from config import ADMIN_ID
+from waifu import Waifu
+from database import db
 
-class Commands:
+
+class StartCommand:
     app = Client("waifu_catcher_bot")
 
-    @app.on_message(filters.command("start", "/"))
+    @app.on_message(filters.command("start", "/") & filters.private)
     async def start(_, message):
-        if message.chat.type == "private":
-            await message.reply("Hello! I'm the Waifu Catcher Bot. To catch a waifu, use the command /waifu followed by the waifu's name.")
-        else:
-            await message.reply("Please use this bot in private messages only.")
+        await message.reply("Hello! I'm the Waifu Catcher Bot. To catch a waifu, use the command /waifu followed by the waifu's name.")
 
-    @app.on_message(filters.command("waifu", "/"))
-    async def waifu(_, message):
-        name = message.text.split(" ", 1)[-1].lower()
-        waifu = await Waifu.get_waifu(name)
-        if waifu is None:
-            await message.reply("Sorry, I don't have that waifu.")
-            return
-        message_id = await Waifu.send_photo(message.chat.id, waifu["name"], waifu["photo"])
-        if message_id is not None:
-            db.pending_messages.insert_one({"message_id": message_id, "waifu_name": waifu["name"], "chat_id": message.chat.id})
+class HelpCommand:
+    app = Client("waifu_catcher_bot")
 
-    @app.on_message(filters.command("my", "/"))
-    async def mywaifus(_, message):
-        if message.chat.type == "private":
-            user_id = message.from_user.id
-            user = db.users.find_one({"user_id": user_id})
-            if user is not None and "waifus" in user:
-                waifus = "\n- ".join(user["waifus"])
-                await message.reply(f"Your waifus:\n- {waifus}")
-            else:
-                await message.reply("You haven't protecced any waifus yet!")
-        else:
-            await message.reply("Please use this command in private messages only.")
-
-Commands.app.run()
+    @app.on_message(filters.command("help", "/"))
+    async def help(_, message):
+        help_text = '''
+        Here are the available commands:
+        /start - Start the bot
+        /help - Show this help message
+        /waifu waifu_name - Catch a waifu with the given name
+        /randi waifu_name - Protect a waifu with the given name
+        /myrandi - Show your protected waifus
+        '''
+        await message.reply_text(help_text)
