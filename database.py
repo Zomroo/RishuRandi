@@ -1,6 +1,9 @@
 from pymongo import MongoClient
 from config import MONGO_URL
 
+lauda = "lauda"
+
+
 client = MongoClient(MONGO_URL)
 db = client.get_database(lauda)
 
