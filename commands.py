@@ -1,8 +1,10 @@
 from pyrogram.types import Message
 from randikhana import Randikhana
 from randi import Randi
+from database import Database
 
-def handle_start_command(client: 'Client', message: Message):
+
+def start(client: 'Client', message: Message):
     """
     Handle the /start command.
     """
@@ -11,7 +13,20 @@ def handle_start_command(client: 'Client', message: Message):
         text="Hi! I'm a waifu catcher bot. Send me /waifu command to get a random waifu."
     )
 
-def handle_waifu_command(client: 'Client', message: Message):
+
+def help(client: 'Client', message: Message):
+    """
+    Handle the /help command.
+    """
+    client.send_message(
+        chat_id=message.chat.id,
+        text="This is a waifu catcher bot. Send me /waifu command to get a random waifu. "
+             "To protect the waifu, send /randi followed by the waifu name. "
+             "You can also see the users who have protected the waifu by sending /myrandi."
+    )
+
+
+def waifu(client: 'Client', message: Message):
     """
     Handle the /waifu command.
     """
@@ -25,7 +40,8 @@ def handle_waifu_command(client: 'Client', message: Message):
     message = client.send_photo(chat_id=message.chat.id, photo=waifu["pic"], caption=waifu["name"])
     Database.save_waifu(chat_id=message.chat.id, waifu=waifu, message_id=message.message_id)
 
-def handle_randi_command(client: 'Client', message: Message):
+
+def randi(client: 'Client', message: Message):
     """
     Handle the /randi command.
     """
@@ -46,7 +62,8 @@ def handle_randi_command(client: 'Client', message: Message):
     else:
         client.send_message(chat_id=message.chat.id, text="Wrong waifu name!")
 
-def handle_myrandi_command(client: 'Client', message: Message):
+
+def myrandi(client: 'Client', message: Message):
     """
     Handle the /myrandi command.
     """
