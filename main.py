@@ -5,7 +5,6 @@ from pyrogram.types import Message
 from config import API_ID, API_HASH, BOT_TOKEN, MONGO_URI
 from randi import Randi
 from randikhana import Randikhana
-from database import Database
 from commands import start, help, waifu, randi, myrandi
 
 bot = Client(
