@@ -1,10 +1,12 @@
 import time
+import schedule
 from pyrogram import Client, filters
-from pyrogram.types import Message, InlineQuery, InlineQueryResultPhoto
+from pyrogram.types import Message
 from config import API_ID, API_HASH, BOT_TOKEN, MONGO_URI
 from randi import Randi
 from randikhana import Randikhana
-import schedule
+from database import Database
+from commands import start, help, waifu, randi, myrandi
 
 bot = Client(
     "my_bot",
@@ -13,26 +15,17 @@ bot = Client(
     bot_token=BOT_TOKEN
 )
 
-def handle_message(client, message):
-    chat_id = message.chat.id
-    text = message.text
+# Add the command handlers to the bot
+bot.add_handler(start)
+bot.add_handler(help)
+bot.add_handler(waifu)
+bot.add_handler(randi)
+bot.add_handler(myrandi)
 
-    if text == '/start':
-        bot.send_message(chat_id, "Hi! I'm a Waifu Catcher bot. I post a new waifu every 5 minutes in this group.")
-    elif text == '/help':
-        help_text = "Here are the available commands:\n\n" \
-                    "/start - Start the bot\n" \
-                    "/help - List all available commands and their functions\n" \
-                    "/randi waifu_name - Protect a waifu with the given name\n" \
-                    "/myrandi - List all waifus protected by you\n"
-        bot.send_message(chat_id, help_text)
-    elif text.startswith('/randi'):
-        # handle /randi command
-        ...
-    elif text == '/myrandi':
-        # handle /myrandi command
-        ...
+# Start the bot
+bot.start()
 
+# Set the time interval for sending the waifu announcements
 TIME_INTERVAL = 5 * 60  # 5 minutes in seconds
 
 def send_waifu_announcement():
@@ -41,57 +34,10 @@ def send_waifu_announcement():
         message = bot.send_photo(chat_id, photo=waifu["pic"], caption=waifu["name"])
         Database.save_waifu(chat_id, waifu, message.message_id)
 
+# Schedule the job to send the waifu announcements
 schedule.every(5).minutes.do(send_waifu_announcement)
 
-@bot.on_message(filters.command("start"))
-def start_handler(client: Client, message: Message):
-    message.reply_text(
-        "Hi! I'm a waifu catcher bot. Send me /waifu command to get a random waifu."
-    )
-
-@bot.on_message(filters.command("waifu"))
-def waifu_handler(client: Client, message: Message):
-    # delete the previous waifu's message
-    prev_waifu = Database.get_current_waifu(message.chat.id)
-    if prev_waifu:
-        bot.delete_messages(message.chat.id, prev_waifu["message_id"])
-
-    # send a new waifu message
-    waifu = Randi.get_random_waifu()
-    message = bot.send_photo(message.chat.id, photo=waifu["pic"], caption=waifu["name"])
-    Database.save_waifu(message.chat.id, waifu, message.message_id)
-
-@bot.on_message(filters.command("randi"))
-def randi_handler(client: Client, message: Message):
-    # get the waifu name from the command
-    waifu_name = message.text.split(maxsplit=1)[1].strip()
-
-    # get the current waifu and its chat ID
-    current_waifu = Database.get_current_waifu(message.chat.id)
-    if not current_waifu:
-        message.reply_text("No waifu currently available.")
-        return
-    chat_id = current_waifu["chat_id"]
-
-    # check if the waifu name matches
-    if waifu_name.lower() == current_waifu["waifu"]["name"].lower():
-        message.reply_text("You have protected the waifu!")
-        Database.add_user(chat_id, message.from_user.id)
-    else:
-        message.reply_text("Wrong waifu name!")
-
-@bot.on_message(filters.command("myrandi"))
-def myrandi_handler(client: Client, message: Message):
-    chat_id = message.chat.id
-    users = Database.get_users(chat_id)
-
-    if not users:
-        message.reply_text("No users have protected the waifu yet.")
-        return
-
-    user_list = "\n".join([f"{u['first_name']} ({u['id']})" for u in users])
-    message.reply_text(f"Users who have protected the waifu:\n{user_list}")
-
+# Run the job scheduler
 while True:
     schedule.run_pending()
     time.sleep(1)
