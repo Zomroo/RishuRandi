@@ -1,27 +1,50 @@
-from pyrogram import Client, filters
-from config import ADMIN_ID
 from waifu import Waifu
-from database import db
 
+# Start command
+async def start(update, context):
+    user_id = update.effective_user.id
+    await context.bot.send_message(chat_id=user_id, text="Hi! I'm a waifu catcher bot. Use /help to see the available commands.")
 
-class StartCommand:
-    app = Client("waifu_catcher_bot")
+# Help command
+async def help(update, context):
+    user_id = update.effective_user.id
+    help_text = "Available commands:\n\n"
+    help_text += "/start - Start the bot\n"
+    help_text += "/help - Show this help message\n"
+    help_text += "/waifu waifu_name - Catch a waifu by name\n"
+    help_text += "/randi waifu_name - Protect a waifu by name\n"
+    help_text += "/mywaifus - Show the list of waifus you have caught\n"
+    await context.bot.send_message(chat_id=user_id, text=help_text)
 
-    @app.on_message(filters.command("start", "/") & filters.private)
-    async def start(_, message):
-        await message.reply("Hello! I'm the Waifu Catcher Bot. To catch a waifu, use the command /waifu followed by the waifu's name.")
+# Waifu command
+async def catch_waifu(update, context):
+    # Get the user ID and waifu name from the command arguments
+    user_id = update.effective_user.id
+    waifu_name = ' '.join(context.args).capitalize()
 
-class HelpCommand:
-    app = Client("waifu_catcher_bot")
+    # Catch the waifu if it is available
+    await Waifu.catch_waifu(update, context, waifu_name, user_id)
 
-    @app.on_message(filters.command("help", "/"))
-    async def help(_, message):
-        help_text = '''
-        Here are the available commands:
-        /start - Start the bot
-        /help - Show this help message
-        /waifu waifu_name - Catch a waifu with the given name
-        /randi waifu_name - Protect a waifu with the given name
-        /myrandi - Show your protected waifus
-        '''
-        await message.reply_text(help_text)
+# Randi command
+async def protect_waifu(update, context):
+    # Get the user ID and waifu name from the command arguments
+    user_id = update.effective_user.id
+    waifu_name = ' '.join(context.args).capitalize()
+
+    # Protect the waifu if it is available
+    await Waifu.protect_waifu(update, context, waifu_name, user_id)
+
+# Mywaifus command
+async def list_waifus(update, context):
+    # Get the user ID from the update
+    user_id = update.effective_user.id
+
+    # Get the list of caught waifus for this user
+    caught_waifus = await Waifu.get_caught_waifus(update, context, user_id)
+
+    # Send the list of caught waifus to the user
+    if caught_waifus:
+        waifus_text = '\n'.join(caught_waifus)
+        await context.bot.send_message(chat_id=user_id, text=f"You have caught the following waifus:\n{waifus_text}")
+    else:
+        await context.bot.send_message(chat_id=user_id, text="You haven't caught any waifus yet.")
