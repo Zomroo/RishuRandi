@@ -5,7 +5,7 @@ lauda = "lauda"
 
 
 client = MongoClient(MONGO_URL)
-db = client.get_database(lauda)
+db = client.get_database(waifu)
 
 
 if "users" not in db.list_collection_names():
