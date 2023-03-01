@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 
 # Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://Lauda:Lauda@cluster0.niyuza9.mongodb.net/?retryWrites=true&w=majority/")
 db = client["my_database"]
 
 
