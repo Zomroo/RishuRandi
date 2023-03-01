@@ -3,7 +3,6 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, InlineQuery, InlineQueryResultPhoto
 from config import API_ID, API_HASH, BOT_TOKEN, MONGO_URI
 from randi import Randi
-from database import Database
 from randikhana import Randikhana
 import schedule
 
