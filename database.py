@@ -1,12 +1,10 @@
 from pymongo import MongoClient
 from config import MONGO_URL
 
-lauda = "lauda"
-
+waifu = "waifu"
 
 client = MongoClient(MONGO_URL)
 db = client.get_database(waifu)
-
 
 if "users" not in db.list_collection_names():
     db.create_collection("users")
