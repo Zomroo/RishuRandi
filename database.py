@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from config import MONGO_URL
 
 client = MongoClient(MONGO_URL)
-db = client.get_database(database_name)
+db = client.get_database(lauda)
 
 
 if "users" not in db.list_collection_names():
