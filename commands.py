@@ -1,5 +1,5 @@
 from pyrogram.types import Message
-from database import Database
+from randikhana import Randikhana
 from randi import Randi
 
 def handle_start_command(client: 'Client', message: Message):
