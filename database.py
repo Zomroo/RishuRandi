@@ -1,8 +1,9 @@
 from pymongo import MongoClient
 from config import MONGODB_URI
 
-client = MongoClient(MONGODB_URI)
-db = client.get_database()
+client = MongoClient(MONGO_URL)
+db = client.get_database(database_name)
+
 
 if "users" not in db.list_collection_names():
     db.create_collection("users")
