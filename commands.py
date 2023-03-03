@@ -1,12 +1,12 @@
 from pyrogram import Client
 from database import db
 
-async def start(message, client: Client):
+async def start(message, client):
     user_id = message.from_user.id
-    user_name = message.from_user.first_name
-    db.add_user(user_id, user_name)
-    await message.reply_text(
-        f"Hi {user_name}! I am your personal waifu catcher. Use /help to see what I can do."
+    user_name = message.from_user.username
+    db = get_db()
+    db.users.insert_one({"user_id": user_id, "user_name": user_name})
+    await message.reply("Welcome to the Waifu Catcher Bot! Use /help to see the list of available commands."
     )
 
 async def help(message, client: Client):
