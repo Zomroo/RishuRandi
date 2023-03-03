@@ -1,4 +1,4 @@
-from pyrogram import Client
+from pyrogram import Client, filters
 from commands import *
 from config import API_ID, API_HASH, BOT_TOKEN
 
