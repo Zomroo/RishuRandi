@@ -7,7 +7,7 @@ BOT_TOKEN = "5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA"
 BOT_USERNAME = "RoseeBbot"
 
 # MongoDB configuration
-MONGO_URI = "mongodb+srv://Lauda:Lauda@cluster0.niyuza9.mongodb.net/?retryWrites=true&w=majority/"
+MONGO_URI = ""
 MONGO_DB_NAME = "lauda"
 
 # Admin configuration
