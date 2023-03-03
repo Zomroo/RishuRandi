@@ -1,12 +1,12 @@
 from pyrogram import Client
-from pyrogram.types import Message
 from commands import *
+from config import Config
 
 app = Client(
     "waifu_catcher_bot",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN,
+    api_id=Config.API_ID,
+    api_hash=Config.API_HASH,
+    bot_token=Config.BOT_TOKEN,
     parse_mode="html"
 )
 
