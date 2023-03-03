@@ -8,6 +8,7 @@ BOT_USERNAME = "RoseeBbot"
 
 # MongoDB configuration
 MONGO_URI = "mongodb+srv://Lauda:Lauda@cluster0.niyuza9.mongodb.net/?retryWrites=true&w=majority/"
+MONGO_DB_NAME = "lauda"
 
 # Admin configuration
 ADMIN_ID = 15849735
