@@ -1,11 +1,30 @@
 from pymongo import MongoClient
-from config import MONGO_URL
+from pymongo.collection import Collection
 
-waifu = "waifu"
+class Database:
+    def __init__(self, url, db_name):
+        self.client = MongoClient(url)
+        self.db = self.client[db_name]
+        self.users = self.db.users
 
-client = MongoClient(MONGO_URL)
-db = client.get_database(waifu)
+    def add_user(self, user_id, user_name):
+        user = {"_id": user_id, "name": user_name}
+        self.users.insert_one(user)
 
-if "users" not in db.list_collection_names():
-    db.create_collection("users")
-    db.users.create_index([("user_id", 1)], unique=True)
+    def get_user(self, user_id):
+        return self.users.find_one({"_id": user_id})
+
+    def catch_waifu(self, user_id, user_name):
+        waifu = f"{user_name}'s waifu"
+        self.users.update_one({"_id": user_id}, {"$set": {"waifu": waifu}})
+        return waifu
+
+    def protect_waifu(self, user_id):
+        self.users.update_one({"_id": user_id}, {"$set": {"protected": True}})
+
+    def unprotect_waifu(self, user_id):
+        self.users.update_one({"_id": user_id}, {"$unset": {"protected": ""}})
+
+    def get_waifu(self, user_id):
+        user = self.get_user(user_id)
+        return user.get("waifu") if user else None
