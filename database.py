@@ -1,32 +1,46 @@
 from pymongo import MongoClient
-from pymongo.errors import DuplicateKeyError
-from config import MONGO_URL, MONGO_DB_NAME
-
-client = MongoClient(MONGO_URL)
-db = client[MONGO_DB_NAME]
-users = db["users"]
 
 class Database:
-    def add_user(self, user_id, user_name):
-        try:
-            users.insert_one({"_id": user_id, "name": user_name})
-        except DuplicateKeyError:
-            pass # user already exists
+    def __init__(self, url, db_name):
+        self.client = MongoClient(url)
+        self.db = self.client[db_name]
 
-    def get_user(self, user_id):
-        return users.find_one({"_id": user_id})
-    
-    def catch_waifu(self, user_id, user_name):
-        waifu = f"{user_name}'s waifu"
-        users.update_one({"_id": user_id}, {"$set": {"waifu": waifu}})
-        return waifu
+    def add_new_waifu(self, name, picture_url, rarity):
+        waifu_collection = self.db.waifus
 
-    def protect_waifu(self, user_id):
-        users.update_one({"_id": user_id}, {"$set": {"protected": True}})
+        # Create a new waifu document
+        waifu = {
+            "name": name,
+            "picture_url": picture_url,
+            "rarity": rarity
+        }
+        # Insert the waifu into the 'waifus' collection
+        result = waifu_collection.insert_one(waifu)
+        # Return the ID of the new waifu document
+        return str(result.inserted_id)
 
-    def unprotect_waifu(self, user_id):
-        users.update_one({"_id": user_id}, {"$unset": {"protected": ""}})
+    def get_waifus(self):
+        waifu_collection = self.db.waifus
+        return waifu_collection.find()
 
-    def get_waifu(self, user_id):
-        user = self.get_user(user_id)
-        return user.get("waifu") if user else None
+    def get_waifu_by_name(self, name):
+        waifu_collection = self.db.waifus
+        return waifu_collection.find_one({"name": name})
+
+    def add_new_user(self, user_id):
+        user_collection = self.db.users
+        user = {
+            "user_id": user_id,
+            "waifus_collected": []
+        }
+        result = user_collection.insert_one(user)
+        return str(result.inserted_id)
+
+    def add_waifu_to_user(self, user_id, waifu_id):
+        user_collection = self.db.users
+        user = user_collection.find_one({"user_id": user_id})
+        if user:
+            waifus_collected = user.get("waifus_collected", [])
+            if waifu_id not in waifus_collected:
+                waifus_collected.append(waifu_id)
+                user_collection.update_one({"user_id": user_id}, {"$set": {"waifus_collected": waifus_collected}})
