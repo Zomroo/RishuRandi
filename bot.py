@@ -92,25 +92,20 @@ async def load_waifus():
 
 # Define a function to send a random waifu to all users
 async def send_random_waifu():
-    while True:
-        # Wait for 5 minutes
-        await asyncio.sleep(10)
+    collection = db.users
+    user_ids = await asyncio.to_thread(list, collection.find({}, {"_id": 1}))
+    for user_id in user_ids:
+        user_id = user_id['_id']
+        try:
+            user = await bot.fetch_user(user_id)
+            waifu = await get_random_waifu()
+            await user.send(waifu)
+        except Exception as e:
+            print(f"Error sending waifu to user with ID {user_id}: {e}")
+        except pyrogram.errors.ChatWriteForbidden:
+            # The bot doesn't have the permission to send messages to this chat
+            pass
 
-        # Choose a random waifu from the list
-        waifu_name = random.choice(WAIFU_LIST) if WAIFU_LIST else None
-
-        # Send the waifu to all users
-        async for user_id in collection.find({}, {"_id": 1}):
-            try:
-                await app.send_photo(
-                    chat_id=user_id["_id"],
-                    photo=f"{waifu_name}.jpg",
-                    caption=f"New waifu alert! You caught {waifu_name}!"
-                )
-
-            except pyrogram.errors.ChatWriteForbidden:
-                # The bot doesn't have the permission to send messages to this chat
-                pass
 
 # Start the client
 if __name__ == "__main__":
