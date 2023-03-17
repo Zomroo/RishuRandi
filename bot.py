@@ -2,6 +2,8 @@ import os
 import time
 import pymongo
 import pyrogram
+import random
+import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message
 import config
@@ -20,14 +22,14 @@ app = Client(
     bot_token=config.API_TOKEN
 )
 
+# Define a list of waifus
+WAIFU_LIST = ["waifu1", "waifu2", "waifu3", "waifu4", "waifu5", "waifu6", "waifu7", "waifu8", "waifu9", "waifu10"]
 
 # Define a command handler
 @app.on_message(filters.command("start"))
 async def start_handler(client: Client, message: Message):
     # Send a welcome message
     await message.reply_text("Welcome to the waifu catcher bot!")
-
-
 # Define a command handler
 @app.on_message(filters.command("catch"))
 async def catch_handler(client: Client, message: Message):
@@ -49,7 +51,6 @@ async def catch_handler(client: Client, message: Message):
     
     # Send a message to confirm the catch
     await message.reply_text(f"Congratulations! You caught {waifu_name}!")
-
 
 # Define a command handler
 @app.on_message(filters.command("mywaifu"))
@@ -80,7 +81,35 @@ async def mywaifu_handler(client, message):
     # Reply to the user with the waifus list
     await message.reply_text(message_text)
 
+# Define a function to send a random waifu to all users
+async def send_random_waifu():
+    while True:
+        # Wait for 5 minutes
+        await asyncio.sleep(30)
 
+        # Get a random waifu from the list
+        waifu_name = random.choice(WAIFU_LIST)
 
-# Run the bot
-app.run()
+        # Get all user IDs from the database
+        user_ids = [user["_id"] for user in collection.find()]
+
+        # Send the waifu to all users
+        for user_id in user_ids:
+            try:
+                await app.send_photo(
+                    chat_id=user_id,
+                    photo=f"{waifu_name}.jpg",
+                    caption=f"New waifu alert! You caught {waifu_name}!"
+                )
+            except pyrogram.errors.ChatWriteForbidden:
+                # The bot doesn't have the permission to send messages to this chat
+                pass
+
+# Start the client
+if __name__ == "__main__":
+    # Start the task to send a random waifu to all users
+    asyncio.get_event_loop().create_task(send_random_waifu())
+
+    # Start the Pyrogram client
+    app.run()
+
