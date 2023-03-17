@@ -1,17 +1,13 @@
-# Telegram API configuration
-API_ID = 15849735
-API_HASH = "b8105dc4c17419dfd4165ecf1d0bc100"
+import os
 
-# Bot configuration
-BOT_TOKEN = "5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA"
-BOT_USERNAME = "RoseeBbot"
+# Telegram bot API token
+API_TOKEN = os.environ.get("5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA")
 
-# MongoDB configuration
-MONGO_URI = ""
-MONGO_DB_NAME = "lauda"
+# Pyrogram API ID and hash
+API_ID = os.environ.get("15849735")
+API_HASH = os.environ.get("b8105dc4c17419dfd4165ecf1d0bc100")
 
-# Admin configuration
-ADMIN_ID = 15849735
-
-# Other configuration
-COMMAND_PREFIXES = ["/"]
+# MongoDB database configuration
+MONGO_URI = os.environ.get("MONGO_URI")
+MONGO_DB_NAME = os.environ.get("MONGO_DB_NAME")
+MONGO_COLLECTION_NAME = os.environ.get("MONGO_COLLECTION_NAME")
