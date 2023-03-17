@@ -85,7 +85,7 @@ async def mywaifu_handler(client, message):
 async def send_random_waifu():
     while True:
         # Wait for 5 minutes
-        await asyncio.sleep(30)
+        await asyncio.sleep(10)
 
         # Get a random waifu from the list
         waifu_name = random.choice(WAIFU_LIST)
