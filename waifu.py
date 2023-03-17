@@ -26,6 +26,6 @@ def add_waifu(name: str, image_url: str):
 
 if __name__ == "__main__":
     # Add your waifus here
-    add_waifu("Asuna", "https://example.com/asuna.png")
-    add_waifu("Rem", "https://example.com/rem.png")
-    add_waifu("Megumin", "https://example.com/megumin.png")
+    add_waifu("Asuna", "https://telegra.ph/file/42bd8eb989a5231e4b2f4.jpg")
+    add_waifu("Rem", "https://telegra.ph/file/42bd8eb989a5231e4b2f4.jpg")
+    add_waifu("Megumin", "https://telegra.ph/file/42bd8eb989a5231e4b2f4.jpg")
