@@ -97,19 +97,17 @@ async def send_random_waifu():
         await asyncio.sleep(10)
 
         # Choose a random waifu from the list
-        waifu_name = random.choice(WAIFU_LIST)
-
-        # Retrieve all the user IDs from the database
-        user_ids = [user["_id"] for user in collection.find()]
+        waifu_name = random.choice(WAIFU_LIST) if WAIFU_LIST else None
 
         # Send the waifu to all users
-        for user_id in user_ids:
+        for user_id in USER_IDS:
             try:
                 await app.send_photo(
                     chat_id=user_id,
                     photo=f"{waifu_name}.jpg",
                     caption=f"New waifu alert! You caught {waifu_name}!"
                 )
+
             except pyrogram.errors.ChatWriteForbidden:
                 # The bot doesn't have the permission to send messages to this chat
                 pass
