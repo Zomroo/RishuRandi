@@ -8,7 +8,6 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 import config
 
-
 # Connect to MongoDB
 client = pymongo.MongoClient(config.MONGO_URI)
 db = client[config.MONGO_DB_NAME]
@@ -23,13 +22,14 @@ app = Client(
 )
 
 # Define a list of waifus
-WAIFU_LIST = ["waifu1", "waifu2", "waifu3", "waifu4", "waifu5", "waifu6", "waifu7", "waifu8", "waifu9", "waifu10"]
+WAIFU_LIST = []
 
 # Define a command handler
 @app.on_message(filters.command("start"))
 async def start_handler(client: Client, message: Message):
     # Send a welcome message
     await message.reply_text("Welcome to the waifu catcher bot!")
+    
 # Define a command handler
 @app.on_message(filters.command("catch"))
 async def catch_handler(client: Client, message: Message):
@@ -51,7 +51,7 @@ async def catch_handler(client: Client, message: Message):
     
     # Send a message to confirm the catch
     await message.reply_text(f"Congratulations! You caught {waifu_name}!")
-
+    
 # Define a command handler
 @app.on_message(filters.command("mywaifu"))
 async def mywaifu_handler(client, message):
@@ -80,6 +80,15 @@ async def mywaifu_handler(client, message):
 
     # Reply to the user with the waifus list
     await message.reply_text(message_text)
+# Define a function to load the waifus list from the database
+async def load_waifus():
+    # Retrieve the waifus list from the database
+    waifus_data = db.waifus.find_one({"_id": "waifus"})
+    waifus_names = waifus_data.get("names", [])
+
+    # Update the global WAIFU_LIST variable
+    global WAIFU_LIST
+    WAIFU_LIST = waifus_names
 
 # Define a function to send a random waifu to all users
 async def send_random_waifu():
@@ -87,11 +96,13 @@ async def send_random_waifu():
         # Wait for 5 minutes
         await asyncio.sleep(10)
 
-        # Get a random waifu from the list
+        # Choose a random waifu from the list
         waifu_name = random.choice(WAIFU_LIST)
 
-        # Get all user IDs from the database
-        user_ids = [user["_id"] for user in collection.find()]
+        # Retrieve the list of user ids from the database
+        user_ids = []
+        async for user in db.users.find():
+            user_ids.append(user["_id"])
 
         # Send the waifu to all users
         for user_id in user_ids:
@@ -107,9 +118,11 @@ async def send_random_waifu():
 
 # Start the client
 if __name__ == "__main__":
+    # Start the task to load the waifus list from the database
+    asyncio.get_event_loop().create_task(load_waifus())
+
     # Start the task to send a random waifu to all users
     asyncio.get_event_loop().create_task(send_random_waifu())
 
     # Start the Pyrogram client
     app.run()
-
