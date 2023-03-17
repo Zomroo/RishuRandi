@@ -100,10 +100,10 @@ async def send_random_waifu():
         waifu_name = random.choice(WAIFU_LIST) if WAIFU_LIST else None
 
         # Send the waifu to all users
-        for user_id in USER_IDS:
+        async for user_id in collection.find({}, {"_id": 1}):
             try:
                 await app.send_photo(
-                    chat_id=user_id,
+                    chat_id=user_id["_id"],
                     photo=f"{waifu_name}.jpg",
                     caption=f"New waifu alert! You caught {waifu_name}!"
                 )
