@@ -53,17 +53,33 @@ async def catch_handler(client: Client, message: Message):
 
 # Define a command handler
 @app.on_message(filters.command("mywaifu"))
-async def mywaifu_handler(client: Client, message: Message):
-    # Get the user's waifus from the database
+async def mywaifu_handler(client, message):
+    # Get the user ID
     user_id = message.from_user.id
-    user_data = collection.find_one({"_id": user_id})
+
+    # Retrieve the user data from the database
+    user_data = db.users.find_one({"user_id": user_id})
+
+    if user_data is None:
+        # User not found in the database
+        await message.reply_text("You haven't added any waifus yet.")
+        return
+
+    # Retrieve the waifus list from the user data
     waifus = user_data.get("waifus", [])
-    
-    # Create a list of waifu names
-    waifu_names = "\n".join(waifus) if waifus else "None"
-    
-    # Send a message with the user's waifus
-    await message.reply_text(f"Here are your waifus:\n{waifu_names}")
+
+    if not waifus:
+        # Waifus list is empty
+        await message.reply_text("You haven't added any waifus yet.")
+        return
+
+    # Build the message with the user's waifus
+    waifu_list = "\n- ".join(waifus)
+    message_text = f"Your waifus:\n- {waifu_list}"
+
+    # Reply to the user with the waifus list
+    await message.reply_text(message_text)
+
 
 
 # Run the bot
