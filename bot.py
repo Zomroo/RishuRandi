@@ -99,10 +99,8 @@ async def send_random_waifu():
         # Choose a random waifu from the list
         waifu_name = random.choice(WAIFU_LIST)
 
-        # Retrieve the list of user ids from the database
-        user_ids = []
-        async for user in db.users.find():
-            user_ids.append(user["_id"])
+        # Retrieve all the user IDs from the database
+        user_ids = [user["_id"] for user in collection.find()]
 
         # Send the waifu to all users
         for user_id in user_ids:
