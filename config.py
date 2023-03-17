@@ -8,6 +8,6 @@ API_ID = os.environ.get("15849735")
 API_HASH = os.environ.get("b8105dc4c17419dfd4165ecf1d0bc100")
 
 # MongoDB database configuration
-MONGO_URI = os.environ.get("MONGO_URI")
-MONGO_DB_NAME = os.environ.get("MONGO_DB_NAME")
-MONGO_COLLECTION_NAME = os.environ.get("MONGO_COLLECTION_NAME")
+MONGO_URI = os.environ.get("mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority")
+MONGO_DB_NAME = os.environ.get("Zoro")
+MONGO_COLLECTION_NAME = os.environ.get("Waifu")
