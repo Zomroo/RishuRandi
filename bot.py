@@ -109,7 +109,10 @@ def send_random_waifu_to_group():
             group_index = random.randint(0, len(groups) - 1)
             group_id = groups[group_index].chat.id
             bot.send_photo(chat_id=group_id, photo=waifu_image, caption=waifu_name)
-
+while True:
+    send_random_waifu_to_group()
+    time.sleep(10)
+    
 # Start the client
 if __name__ == "__main__":
     # Start the task to load the waifus list from the database
