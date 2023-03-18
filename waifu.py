@@ -1,25 +1,23 @@
-import random
 import pymongo
 import config
-from database import add_waifu
 
 # Connect to MongoDB
 client = pymongo.MongoClient(config.MONGO_URI)
 db = client[config.MONGO_DB_NAME]
 collection = db[config.MONGO_COLLECTION_NAME]
 
-def get_random_waifu() -> str:
+def get_random_waifu():
     """
     Returns a random waifu from the database.
 
     Returns:
-        str: The name of the waifu.
+        tuple: A tuple containing the waifu's name and image URL.
     """
-    result = collection.find_one({"_id": "waifus"})
-    if not result or not result["names"]:
-        return "No waifus found in the database."
-
-    return random.choice(result["names"])
+    waifus = collection.find_one({"_id": "waifus"})
+    if not waifus or not waifus.get("names") or not waifus.get("images"):
+        return None, None
+    index = random.randint(0, len(waifus["names"]) - 1)
+    return waifus["names"][index], waifus["images"][index]
 
 def add_waifu(name: str, image_url: str):
     """
