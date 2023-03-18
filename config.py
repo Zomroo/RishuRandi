@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Telegram bot API token
-API_TOKEN = "5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA"
+BOT_TOKEN = "5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA"
 
 # Pyrogram API ID and hash
 API_ID = "15849735"
