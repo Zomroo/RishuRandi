@@ -95,14 +95,8 @@ async def load_waifus():
 
 # Function to send a random waifu image to a group chat
 def send_waifu():
-    # Get a random waifu from the database
-    waifus = collection.find_one({"_id": "waifus"})
-    if waifus is None or not waifus["names"]:
-        print("No waifus found in the database.")
-        return
-
-    name = random.choice(waifus["names"])
-    image_url = waifus["images"][waifus["names"].index(name)]
+    # Get a random waifu from the waifu module
+    waifu = get_random_waifu()
 
     # Send the waifu image to a random group chat where the bot is a member
     group_chats = [chat for chat in app.getUpdates() if chat.message.chat.type == pyrogram.Chat.PRIVATE]
@@ -111,7 +105,7 @@ def send_waifu():
         return
 
     group_chat = random.choice(group_chats).message.chat
-    app.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
+    app.send_photo(chat_id=group_chat.id, photo=waifu["image_url"], caption=f"Here's your waifu: {waifu['name']}")
 
 # Start the client
 if __name__ == "__main__":
