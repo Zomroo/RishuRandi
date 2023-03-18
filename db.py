@@ -1,12 +1,12 @@
 import pymongo
 import config
-
+import random
+from waifu import waifus
 
 # Connect to MongoDB
 client = pymongo.MongoClient(config.MONGO_URI)
 db = client[config.MONGO_DB_NAME]
 collection = db[config.MONGO_COLLECTION_NAME]
-
 
 def add_user(user_id: int):
     """
@@ -53,6 +53,19 @@ def get_user_waifus(user_id: int):
         return []
 
 
+def add_waifu():
+    """
+    Adds a random waifu from the waifus list to the database.
+    """
+    waifu = random.choice(waifus)
+    name = waifu['name']
+    image_url = waifu['image_url']
+    collection.update_one(
+        {"_id": "waifus"},
+        {"$addToSet": {"names": name, "images": image_url}},
+        upsert=True
+    )
+
 if __name__ == "__main__":
     # Example usage:
     user_id = 123456789
@@ -61,3 +74,4 @@ if __name__ == "__main__":
     add_waifu_to_user(user_id, "Rem")
     waifus = get_user_waifus(user_id)
     print(waifus)
+    add_waifu()
