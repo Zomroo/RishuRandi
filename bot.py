@@ -95,22 +95,28 @@ async def load_waifus():
     WAIFU_LIST = waifus_names
 
 
-# Send a random waifu image and name to a group
-def send_random_waifu_to_group():
+def send_waifu():
     # Get a random waifu from the database
     waifus = collection.find_one({"_id": "waifus"})
-    if waifus:
-        waifu_index = random.randint(0, len(waifus["names"]) - 1)
-        waifu_name = waifus["names"][waifu_index]
-        waifu_image = waifus["images"][waifu_index]
-        # Send the waifu image and name to a random group where the bot is added
-        groups = bot.get_chat_administrators("@MyBotChannel")
-        if groups:
-            group_index = random.randint(0, len(groups) - 1)
-            group_id = groups[group_index].chat.id
-            bot.send_photo(chat_id=group_id, photo=waifu_image, caption=waifu_name)
+    if waifus is None or not waifus["names"]:
+        print("No waifus found in the database.")
+        return
+
+    name = random.choice(waifus["names"])
+    image_url = waifus["images"][waifus["names"].index(name)]
+
+    # Send the waifu image to a random group chat where the bot is a member
+    group_chats = [chat for chat in bot.getUpdates() if chat.message.chat.type == telegram.Chat.PRIVATE]
+    if not group_chats:
+        print("Bot is not a member of any group chat.")
+        return
+
+    group_chat = random.choice(group_chats).message.chat
+    bot.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
+
+# Send waifus every 10 seconds
 while True:
-    send_random_waifu_to_group()
+    send_waifu()
     time.sleep(10)
     
 # Start the client
