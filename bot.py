@@ -116,7 +116,7 @@ def send_waifu():
     app.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
 
 # Start the client
-if name == "main":
+if __name__ == "__main__":
     # Load the waifus list from the database
     asyncio.get_event_loop().run_until_complete(load_waifus())
 
