@@ -57,17 +57,16 @@ add_waifu("Mikasa", "https://telegra.ph/file/3c1f3b4816e38bf16d7db.jpg")
 
 def send_waifu():
     """
-    Sends a random waifu to all private chats.
+    Sends a random waifu to all groups where the bot is a member.
     """
     name, image_url = get_random_waifu()
     if not name or not image_url:
         print("No waifus found in database.")
         return
 
-    for chat in app.get_dialogs():
-        if chat.chat.type == "private":
+    for chat in app.iter_dialogs():
+        if chat.chat.type == "group" or chat.chat.type == "supergroup":
             app.send_photo(chat.chat.id, photo=image_url, caption=name)
-
 
 with app:
     send_waifu()
