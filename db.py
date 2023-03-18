@@ -53,20 +53,31 @@ def get_user_waifus(user_id: int):
         return []
 
 
-def add_waifu():
+def add_waifu(name: str, image_url: str):
     """
-    Adds a random waifu from the waifus list to the database.
+    Adds a new waifu to the database.
+
+    Args:
+        name (str): The name of the waifu.
+        image_url (str): The URL of the waifu's image.
     """
-    waifu = random.choice(waifus)
-    name = waifu['name']
-    image_url = waifu['image_url']
     collection.update_one(
         {"_id": "waifus"},
         {"$addToSet": {"names": name, "images": image_url}},
         upsert=True
     )
 
-if __name__ == "__main__":
+def add_random_waifu():
+    """
+    Adds a random waifu from the waifus list to the database.
+    """
+    waifu = random.choice(waifus)
+    name = waifu['name']
+    image_url = waifu['image_url']
+    add_waifu(name, image_url)
+
+
+if name == "main":
     # Example usage:
     user_id = 123456789
     add_user(user_id)
@@ -74,4 +85,4 @@ if __name__ == "__main__":
     add_waifu_to_user(user_id, "Rem")
     waifus = get_user_waifus(user_id)
     print(waifus)
-    add_waifu()
+    add_random_waifu()
