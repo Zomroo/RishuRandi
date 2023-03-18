@@ -9,7 +9,6 @@ db = client[config.MONGO_DB_NAME]
 collection = db[config.MONGO_COLLECTION_NAME]
 
 app = pyrogram.Client(
-    session_name=config.SESSION_NAME,
     api_id=config.API_ID,
     api_hash=config.API_HASH,
     bot_token=config.BOT_TOKEN
