@@ -96,6 +96,13 @@ async def load_waifus():
     WAIFU_LIST = waifus_names
 
 
+from pyrogram import Client
+import random
+import time
+
+app = Client("my_account")
+
+# Function to send a random waifu image to a group chat
 def send_waifu():
     # Get a random waifu from the database
     waifus = collection.find_one({"_id": "waifus"})
@@ -114,18 +121,19 @@ def send_waifu():
 
     group_chat = random.choice(group_chats).message.chat
     app.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
-# Send waifus every 10 seconds
-while True:
-    send_waifu()
-    time.sleep(10)
-    
+
 # Start the client
-if __name__ == "__main__":
-    # Start the task to load the waifus list from the database
-    asyncio.get_event_loop().create_task(load_waifus())
-
-    # Start the task to send a random waifu to all users
-    asyncio.get_event_loop().create_task(send_random_waifu())
-
+if name == 'main':
     # Start the Pyrogram client
-    app.run()
+    app.start()
+
+    # Load the waifus list from the database
+    asyncio.get_event_loop().run_until_complete(load_waifus())
+
+    # Send waifus every 10 seconds
+    while True:
+        send_waifu()
+        time.sleep(10)
+
+    # Stop the client
+    app.stop()
