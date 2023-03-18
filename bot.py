@@ -107,14 +107,13 @@ def send_waifu():
     image_url = waifus["images"][waifus["names"].index(name)]
 
     # Send the waifu image to a random group chat where the bot is a member
-    group_chats = [chat for chat in bot.getUpdates() if chat.message.chat.type == telegram.Chat.PRIVATE]
+    group_chats = [chat for chat in app.getUpdates() if chat.message.chat.type == pyrogram.Chat.PRIVATE]
     if not group_chats:
         print("Bot is not a member of any group chat.")
         return
 
     group_chat = random.choice(group_chats).message.chat
-    bot.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
-
+    app.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
 # Send waifus every 10 seconds
 while True:
     send_waifu()
