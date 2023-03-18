@@ -58,7 +58,7 @@ async def mywaifu_handler(client, message):
     user_id = message.from_user.id
 
     # Retrieve the user data from the database
-    user_data = db.users.find_one({"user_id": user_id})
+    user_data = collection.find_one({"_id": user_id})
 
     if user_data is None:
         # User not found in the database
@@ -79,11 +79,10 @@ async def mywaifu_handler(client, message):
 
     # Reply to the user with the waifus list
     await message.reply_text(message_text)
-
 # Define a function to load the waifus list from the database
 async def load_waifus():
     # Retrieve the waifus list from the database
-    waifus_data = db.waifus.find_one({"_id": "waifus"})
+    waifus_data = collection.find_one({"_id": "waifus"})
     if waifus_data is None:
         # Handle the case where no data was returned
         print("No waifus found in the database.")
@@ -93,7 +92,6 @@ async def load_waifus():
     # Update the global WAIFU_LIST variable
     global WAIFU_LIST
     WAIFU_LIST = waifus_names
-
 
 # Function to send a random waifu image to a group chat
 def send_waifu():
