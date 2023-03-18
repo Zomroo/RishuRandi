@@ -123,7 +123,7 @@ def send_waifu():
     app.send_photo(chat_id=group_chat.id, photo=image_url, caption=f"Here's your waifu: {name}")
 
 # Start the client
-if name == 'main':
+if __name__ == '__main__':
     # Start the Pyrogram client
     app.start()
 
