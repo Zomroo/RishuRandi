@@ -7,6 +7,7 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message
 import config
+from waifu import get_random_waifu
 
 # Connect to MongoDB
 client = pymongo.MongoClient(config.MONGO_URI)
