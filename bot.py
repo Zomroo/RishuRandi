@@ -84,11 +84,16 @@ async def mywaifu_handler(client, message):
 async def load_waifus():
     # Retrieve the waifus list from the database
     waifus_data = db.waifus.find_one({"_id": "waifus"})
+    if waifus_data is None:
+        # Handle the case where no data was returned
+        print("No waifus found in the database.")
+        return
     waifus_names = waifus_data.get("names", [])
 
     # Update the global WAIFU_LIST variable
     global WAIFU_LIST
     WAIFU_LIST = waifus_names
+
 
 # Define a function to send a random waifu to all users
 async def send_random_waifu():
