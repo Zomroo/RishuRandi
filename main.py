@@ -25,13 +25,13 @@ async def start_command(client, message):
 
 
 # Add command
-@app.on_message(filters.private & filters.command("add"))
+@Client.on_message(filters.command("add"))
 async def add_command(client, message):
     # Ask for waifu picture
     await message.reply_text("Please send me a picture of your waifu.")
 
     # Wait for waifu picture
-    waifu_picture = await app.ask(message.chat.id, "Please send me a picture of your waifu.")
+    waifu_picture = await filters.create(app).ask(message.chat.id, "Please send me a picture of your waifu.")
 
     # Ask for waifu name
     await message.reply_text("Please tell me the name of your waifu.")
