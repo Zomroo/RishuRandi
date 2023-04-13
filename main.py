@@ -1,100 +1,27 @@
 import os
-import pymongo
+import pyrogram
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import Message
+from database import save_image
 
-# Import database functions
-from database import save_waifu
-
-# Create Pyrogram client instance
 api_id = 15849735
-api_hash = "b8105dc4c17419dfd4165ecf1d0bc100"
-bot_token = "5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4"
-app = Client("waifu_catcher_bot", api_id, api_hash, bot_token=bot_token)
+api_hash = os.environ.get('b8105dc4c17419dfd4165ecf1d0bc100')
+bot_token = os.environ.get('5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4')
+app = Client('waifu_bot', api_id, api_hash, bot_token=bot_token)
 
-# Create MongoDB client instance and connect to database
-mongo_client = pymongo.MongoClient(os.environ.get("mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"))
-db = mongo_client["waifu_db"]
+@app.on_message(filters.command('add'))
+async def add_waifu_handler(client: Client, message: Message):
+    # Ask user for image of waifu
+    await message.reply_text('Please send me an image of your waifu.')
 
+    # Wait for user to send image
+    waifu_image = await app.listen(filters.photo & filters.private)
 
-# Start command
-@app.on_message(filters.command("start"))
-async def start_command(client, message):
-    # Send welcome message
-    await message.reply_text("Welcome to Waifu Catcher Bot!")
+    # Save image to MongoDB
+    file_id = waifu_image.photo.file_id
+    save_image(file_id)
 
+    # Send confirmation message
+    await message.reply_text('Image saved to database.')
 
-# Add command
-@Client.on_message(filters.command("add"))
-async def add_command(client, message):
-    # Ask for waifu picture
-    await message.reply_text("Please send me a picture of your waifu.")
-
-    # Wait for waifu picture
-    waifu_picture = await filters.create(app).ask(message.chat.id, "Please send me a picture of your waifu.")
-
-    # Ask for waifu name
-    await message.reply_text("Please tell me the name of your waifu.")
-
-    # Wait for waifu name
-    waifu_name = await app.ask(message.chat.id, "Please tell me the name of your waifu.")
-
-    # Create inline keyboard with rarity options
-    rarity_keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton("Common", callback_data="common"),
-                InlineKeyboardButton("Rare", callback_data="rare"),
-            ],
-            [
-                InlineKeyboardButton("Epic", callback_data="epic"),
-                InlineKeyboardButton("Legendary", callback_data="legendary"),
-            ],
-        ]
-    )
-
-    # Ask for waifu rarity
-    await message.reply_text(
-        "Please select the rarity of your waifu:", reply_markup=rarity_keyboard
-    )
-
-    # Wait for waifu rarity
-    waifu_rarity = await app.listen(message.chat.id)
-
-    # Send waifu preview with name and rarity
-    await client.send_photo(
-        message.chat.id,
-        waifu_picture.audio or waifu_picture.document or waifu_picture.photo or waifu_picture.video,
-        caption=f"{waifu_name.text}\nRarity: {waifu_rarity.data}",
-    )
-
-    # Save waifu in database
-    save_waifu(db, waifu_name.text, waifu_rarity.data)
-    
-    # Send message to owner to confirm successful addition
-    await message.reply_text("Waifu added successfully!")
-
-
-
-
-# Done command
-@app.on_message(filters.private & filters.command("done"))
-async def done_command(client, message):
-    # Send message to owner informing them that the command is only available in group chats
-    await message.reply_text("This command is only available in group chats.")
-
-
-# Catch callback queries from inline keyboards
-@app.on_callback_query()
-async def catch_callback_query(client, query):
-    # Answer callback query
-    await query.answer()
-
-    # Send message to owner informing them that the command is only available in group chats
-    await query.message.reply_text(
-        "This command is only available in group chats.", reply_markup=None
-    )
-
-
-# Run the bot
 app.run()
