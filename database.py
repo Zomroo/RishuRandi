@@ -1,17 +1,14 @@
+import os
 import pymongo
-import config
 
-class Database:
-    def __init__(self):
-        self.client = pymongo.MongoClient(config.MONGO_URI)
-        self.db = self.client[config.MONGO_DB_NAME]
-        self.collection = self.db[config.MONGO_COLLECTION_NAME]
 
-    def add_waifu(self, waifu_data):
-        self.collection.insert_one(waifu_data)
+def connect_to_database():
+    # Create MongoDB client instance and connect to database
+    mongo_client = pymongo.MongoClient(os.environ.get("mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"))
+    db = mongo_client["waifu_db"]
+    return db
 
-    def get_all_waifus(self):
-        return list(self.collection.find())
 
-    def get_waifu_by_id(self, waifu_id):
-        return self.collection.find_one({'_id': waifu_id})
+def save_waifu(db, name, rarity, image):
+    # Save waifu in database
+    db.waifus.insert_one({"name": name, "rarity": rarity, "image": image})
