@@ -13,7 +13,7 @@ bot_token = os.environ.get("5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4")
 app = Client("waifu_catcher_bot", api_id, api_hash, bot_token=bot_token)
 
 # Create MongoDB client instance and connect to database
-mongo_client = pymongo.MongoClient(os.environ.get("MONGO_URL"))
+mongo_client = pymongo.MongoClient(os.environ.get("mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"))
 db = mongo_client["waifu_db"]
 
 
