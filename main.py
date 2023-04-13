@@ -7,9 +7,9 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database import save_waifu
 
 # Create Pyrogram client instance
-api_id = os.environ.get("15849735")
-api_hash = os.environ.get("b8105dc4c17419dfd4165ecf1d0bc100")
-bot_token = os.environ.get("5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4")
+api_id = 15849735
+api_hash = "b8105dc4c17419dfd4165ecf1d0bc100"
+bot_token = "5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4"
 app = Client("waifu_catcher_bot", api_id, api_hash, bot_token=bot_token)
 
 # Create MongoDB client instance and connect to database
