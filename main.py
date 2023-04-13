@@ -4,9 +4,9 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from database import save_image
 
-api_id = int(os.environ.get('15849735'))
-api_hash = os.environ.get('b8105dc4c17419dfd4165ecf1d0bc100')
-bot_token = os.environ.get('5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4')
+api_id = 15849735
+api_hash = "b8105dc4c17419dfd4165ecf1d0bc100"
+bot_token = "5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4"
 app = Client('waifu_bot', api_id, api_hash, bot_token=bot_token)
 
 @app.on_message(filters.command('add'))
