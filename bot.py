@@ -7,6 +7,13 @@ from database import Database
 app = Client('my_bot', api_id=config.API_ID, api_hash=config.API_HASH, bot_token=config.BOT_TOKEN)
 db = Database()
 
+# Define a callback function for the /start command
+@app.on_message(filters.command('start'))
+async def start(client, message):
+    # Send a welcome message to the user
+    await message.reply('Welcome to my waifu bot!')
+
+
 # Define a filter to only allow the owner to use the /add and /done commands
 owner_filter = filters.create(lambda _, __, update: str(update.chat.id) == config.OWNER_CHAT_ID)
 
