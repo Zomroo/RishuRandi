@@ -3,7 +3,7 @@ import os
 # Telegram API settings
 API_ID = int(os.environ.get('API_ID', '15849735'))
 API_HASH = os.environ.get('API_HASH', 'b8105dc4c17419dfd4165ecf1d0bc100')
-BOT_TOKEN = os.environ.get('BOT_TOKEN', '5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA')
+BOT_TOKEN = os.environ.get('BOT_TOKEN', '5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4')
 OWNER_CHAT_ID = os.environ.get('OWNER_CHAT_ID', '5148561602')
 
 # MongoDB settings
