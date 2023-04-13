@@ -31,13 +31,13 @@ async def add_command(client, message):
     await message.reply_text("Please send me a picture of your waifu.")
 
     # Wait for waifu picture
-    waifu_picture = await app.listen(message.chat.id)
+    waifu_picture = await app.ask(message.chat.id, "Please send me a picture of your waifu.")
 
     # Ask for waifu name
     await message.reply_text("Please tell me the name of your waifu.")
 
     # Wait for waifu name
-    waifu_name = await app.listen(message.chat.id)
+    waifu_name = await app.ask(message.chat.id, "Please tell me the name of your waifu.")
 
     # Create inline keyboard with rarity options
     rarity_keyboard = InlineKeyboardMarkup(
@@ -73,6 +73,8 @@ async def add_command(client, message):
     
     # Send message to owner to confirm successful addition
     await message.reply_text("Waifu added successfully!")
+
+
 
 
 # Done command
