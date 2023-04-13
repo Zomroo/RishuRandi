@@ -9,4 +9,4 @@ OWNER_CHAT_ID = os.environ.get('OWNER_CHAT_ID', '5148561602')
 # MongoDB settings
 MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"')
 MONGO_DB_NAME = os.environ.get('DB_NAME', 'Waify')
-COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'Khana')
+MONGO_COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'Khana')
