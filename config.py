@@ -1,17 +1,12 @@
 import os
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# Telegram API settings
+API_ID = int(os.environ.get('API_ID', '15849735'))
+API_HASH = os.environ.get('API_HASH', 'b8105dc4c17419dfd4165ecf1d0bc100')
+BOT_TOKEN = os.environ.get('BOT_TOKEN', '5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA')
+OWNER_CHAT_ID = os.environ.get('OWNER_CHAT_ID', '5148561602')
 
-# Telegram bot API token
-BOT_TOKEN = "5562112612:AAH7Sbz2iIAdoPknjv0FnuiNbiDa_5OFYQA"
-
-# Pyrogram API ID and hash
-API_ID = "15849735"
-API_HASH = "b8105dc4c17419dfd4165ecf1d0bc100"
-
-# MongoDB database configuration
-MONGO_URI = "mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"
-MONGO_DB_NAME = "Cluster0"
-MONGO_COLLECTION_NAME = "users"
+# MongoDB settings
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"')
+DB_NAME = os.environ.get('DB_NAME', 'my_database')
+COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'my_collection')
