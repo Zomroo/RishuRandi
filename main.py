@@ -15,7 +15,7 @@ async def add_waifu_handler(client: Client, message: Message):
     await message.reply_text('Please send me an image of your waifu.')
 
     # Wait for user to send image
-    waifu_image = await app.get_messages(chat_id=message.chat.id, message_ids=message.message_id)
+    waifu_image = await app.listen(message.chat.id)
 
     # Save image to MongoDB
     if waifu_image.photo:
