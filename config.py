@@ -2,8 +2,8 @@ import os
 
 class Config:
     # Telegram API settings
-    API_ID = int(os.environ.get('API_ID', '15849735'))
-    API_HASH = os.environ.get('API_HASH', 'b8105dc4c17419dfd4165ecf1d0bc100')
+    API_ID = int(os.environ.get('API_ID', '14091414'))
+    API_HASH = os.environ.get('API_HASH', '1e26ebacf23466ed6144d29496aa5d5b')
     BOT_TOKEN = os.environ.get('BOT_TOKEN', '5615528335:AAHOlk2j2TE5CWOv24mxBwpBMAx2ui3Zv1k')
     OWNER_ID = os.environ.get('OWNER_CHAT_ID', '5148561602')
 
