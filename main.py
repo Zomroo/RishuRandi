@@ -13,7 +13,7 @@ app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 @app.on_message(filters.command(["add"]))
 def add_command_handler(client: Client, message: Message):
     # Check if the command is invoked in a bot chat
-    if message.chat.type == "private":
+    if message.chat.is_private:
         # Ask the user for a picture
         client.send_message(
             chat_id=message.chat.id,
