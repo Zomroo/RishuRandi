@@ -1,22 +1,13 @@
-# waifu.py
 from random import choice
-from modules.database import get_all_waifus
+from .database import get_user_waifus
 
 def get_random_waifu():
-    all_waifus = get_all_waifus()
-    if all_waifus:
-        return choice(all_waifus)
-    return None
-
-
-def get_random_waifu():
-    # Retrieve random waifu from the database
-    user_waifus = get_all_waifus()
+    user_waifus = get_user_waifus()
     if user_waifus:
-        return random.choice(user_waifus)
+        return choice(user_waifus)
     return None
 
-
+# Other functions in waifu.py (save_waifu, delete_waifu) remain the same
 def save_waifu(file_id, name, user_id):
     # Save the waifu to the database
     waifu = {
