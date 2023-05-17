@@ -6,21 +6,21 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import BotInlineDisabled
 
-from config import API_ID, API_HASH, BOT_TOKEN, MONGO_URL
+from config import Config
 
 # Connect to MongoDB
-mongo_client = MongoClient(MONGO_URL)
-db = mongo_client['waifus']
+mongo_client = MongoClient(Config.MONGO_URL)
+db = mongo_client[Config.DB_NAME]
 
 # Get the waifus collection
-waifus_collection = db['waifus']
+waifus_collection = db[Config.MONGO_COLLECTION_NAME]
 
 # Create the Pyrogram Client
 bot = Client(
     'waifu_bot',
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN
+    api_id=Config.API_ID,
+    api_hash=Config.API_HASH,
+    bot_token=Config.BOT_TOKEN
 )
 
 
