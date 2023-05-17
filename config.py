@@ -9,4 +9,6 @@ class Config:
     BOT_TOKEN = os.environ.get('BOT_TOKEN', '5615528335:AAHOlk2j2TE5CWOv24mxBwpBMAx2ui3Zv1k')
 
     # MongoDB settings
-    MONGO_URL = os.environ.get('MONGO_URL', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority')
+    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority')
+    DB_NAME = os.environ.get('DB_NAME', 'Waify')
+    MONGO_COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'Khana')
