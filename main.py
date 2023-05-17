@@ -115,7 +115,9 @@ def mywaifu_command(client, message):
         text=waifu_list,
         reply_markup=reply_markup
     )
-@app.on_message(filters.command('add') & filters.private & filters.user(Config.BOT_OWNER) & filters.private_chat)
+
+
+@app.on_message(filters.command('add') & filters.private)
 def add_command(client, message):
     if message.reply_to_message is None or not message.reply_to_message.photo:
         client.send_message(
@@ -131,6 +133,7 @@ def add_command(client, message):
         text="Please enter the name of the waifu:"
     )
     client.register_next_step_handler(message, process_waifu_name, waifu_photo)
+
 
 
 def process_waifu_name(client, message, waifu_photo):
