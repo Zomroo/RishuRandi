@@ -4,9 +4,9 @@ import os
 API_ID = int(os.environ.get('API_ID', '15849735'))
 API_HASH = os.environ.get('API_HASH', 'b8105dc4c17419dfd4165ecf1d0bc100')
 BOT_TOKEN = os.environ.get('BOT_TOKEN', '5931504207:AAF-jzKC8USclrFYrtcaeAZifQcmEcwFNe4')
-OWNER_CHAT_ID = os.environ.get('OWNER_CHAT_ID', '5148561602')
+OWNER_ID = os.environ.get('OWNER_CHAT_ID', '5148561602')
 
 # MongoDB settings
 MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"')
-MONGO_DB_NAME = os.environ.get('DB_NAME', 'Waify')
+DB_NAME = os.environ.get('DB_NAME', 'Waify')
 MONGO_COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'Khana')
