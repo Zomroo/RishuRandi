@@ -1,7 +1,12 @@
 # waifu.py
-import random
-from pyrogram.types import InputMediaPhoto
-from modules.database import save_user_waifu, get_user_waifus
+from random import choice
+from modules.database import get_all_waifus
+
+def get_random_waifu():
+    all_waifus = get_all_waifus()
+    if all_waifus:
+        return choice(all_waifus)
+    return None
 
 
 def get_random_waifu():
