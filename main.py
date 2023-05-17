@@ -36,17 +36,17 @@ def start_command(client, message):
     send_random_waifu(chat_id)
 
 
-@app.on_message(filters.command('catch'))
+@app.on_message(filters.command('catch') & filters.group)
 def catch_command(client, message):
-    waifu_name = message.text.split('/catch', 1)[1].strip()
-    chat_id = message.chat.id
-
-    if chat_id not in waifu_catchers:
+    if message.chat.id not in waifu_catchers:
         client.send_message(
-            chat_id=chat_id,
+            chat_id=message.chat.id,
             text="No waifu is currently appearing. Please wait for the next waifu to appear."
         )
         return
+
+    waifu_name = message.text.split('/catch', 1)[1].strip()
+    chat_id = message.chat.id
 
     waifu_info = waifu_catchers[chat_id]
     if waifu_info["name"].lower() == waifu_name.lower():
@@ -61,6 +61,7 @@ def catch_command(client, message):
             chat_id=chat_id,
             text="Your guess is wrong!"
         )
+
 
 
 @app.on_message(filters.text)
