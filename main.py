@@ -1,6 +1,7 @@
 # main.py
 
 import os
+import logging
 from pymongo import MongoClient
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -104,3 +105,5 @@ def handle_callback(client, callback_query):
 # Start the bot
 if __name__ == '__main__':
     bot.run()
+    
+    logging.basicConfig(level=logging.DEBUG)
