@@ -1,3 +1,5 @@
+# config.py
+
 import os
 
 class Config:
@@ -8,6 +10,6 @@ class Config:
     OWNER_ID = os.environ.get('OWNER_CHAT_ID', '5500572462')
 
     # MongoDB settings
-    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority"')
+    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://Zoro:Zoro@cluster0.x1vigdr.mongodb.net/?retryWrites=true&w=majority')
     DB_NAME = os.environ.get('DB_NAME', 'Waify')
     MONGO_COLLECTION_NAME = os.environ.get('COLLECTION_NAME', 'Khana')
