@@ -1,4 +1,5 @@
 import pyrogram
+from pyrogram import filters
 
 # Get your API ID, hash, and bot token from @BotFather
 api_id = 14091414
@@ -9,8 +10,8 @@ bot_token = '5615528335:AAHOlk2j2TE5CWOv24mxBwpBMAx2ui3Zv1k'
 client = pyrogram.Client(
     "my_bot",
     api_id=api_id,
-    hash=hash,
-    bot_token=bot_token,
+    api_hash=api_hash,
+    bot_token=bot_token
 )
 
 # Define a command handler for the "add" command
@@ -27,11 +28,5 @@ async def add_command(client, message):
         # Save the picture to the bot's filesystem
         await photo.download("./my_picture.jpg")
 
-        # Send the user a confirmation message
-        await message.reply("I have saved your picture.")
 
-# Start the bot
-client.start()
-
-# Run the bot until it is stopped
-client.run_until_disconnected()
+client.run()
